@@ -1,5 +1,5 @@
 (function() {
-	  var DEPARTMENT_KEY = {
+  var DEPARTMENT_KEY = {
 		"6": "Line Item Alerts",
 		"2": "Ad Platform support",
 		"11": "Cox Media",
@@ -20,7 +20,8 @@
 		"29": "MVPD Corporate",
 		"30": "MVPD Programmer"
   };
- var TICKET_KEY = {
+
+  var TICKET_KEY = {
 		"14": "Backlog",
 		"6": "Order Insertion",
 		"1": "Issue",
@@ -47,7 +48,7 @@
 		"9": "Needs Review",
 		"6": "Closed"
   };	
- var PRIORITIES_KEY = {
+  var PRIORITIES_KEY = {
 		"7": "Low",
 		"8": "Medium",
 		"9": "High",
@@ -59,14 +60,14 @@
 		"15": "C- Backlog"
   };	
   var FLAG_KEY = {
-	  	"0": "None",
+	  	"0": "None"
 		"1": "Purple",
 		"2": "Orange",
 		"3": "Green",
 		"4": "Yellow",
 		"5": "Red",
 		"6": "Blue"
-  };  
+  };	
 
     // Create the connector object
     var myConnector = tableau.makeConnector();
@@ -89,7 +90,7 @@
 			{ id:"lastreplier", alias: "lastreplier", dataType: tableau.dataTypeEnum.string},
 			{ id:"subject", alias: "subject", dataType: tableau.dataTypeEnum.string},
 			{ id:"creationtime", alias: "creationtime", dataType: tableau.dataTypeEnum.datetime},
-			{ id:"lastactivity", alias: "lastactivity", dataType: tableau.dataTypeEnum.string},
+			{ id:"lastactivity", alias: "lastactivity", dataType: tableau.dataTypeEnum.datetime},
 			{ id:"laststaffreply", alias: "laststaffreply", dataType: tableau.dataTypeEnum.string},
 			{ id:"lastuserreply", alias: "lastuserreply", dataType: tableau.dataTypeEnum.datetime},
 			{ id:"slaplanid", alias: "slaplanid", dataType: tableau.dataTypeEnum.string},
@@ -115,10 +116,7 @@
 
     var xhr = $.ajax({
       // url: tableau.connectionData,
-	  // url: "test.xml",
-	  url: "http://beringmedia.helpserve.com/api/index.php?e=/Tickets/Ticket/ListAll/12,17,18,19,20,21,23,24,25,29,30/4,5,6,7,8,9/&apikey=c9d160ae-0802-d194-5990-7ff6fb07889f&salt=75996179&signature=f2YHCCJYVzLdGrd9MjPA0CvmHEPyXwAcmkjXk6Sldhs%3D",
-	  type: "GET",
-	  headers: { "Accept": "application/json; odata=verbose" },
+	  url: "test.xml",
       success: function (response) {
         var ticketslist = $(response).find('tickets');
 
@@ -127,13 +125,13 @@
 
           // Build a row from the parsed response
           tableData.push({
-				'ticketid':  $(this).attr('id'),
-				'flagtype':  FLAG_KEY[$(this).attr('flagtype')],
+				'ticketid':  $(this).attr('id').text().trim(),
+				'flagtype':  $(this).find('flagtype').text().trim(),
 				'displayid':  $(this).find('displayid').text().trim(),
-				'departmentid':  DEPARTMENT_KEY[$(this).find('departmentid').text().trim()],
-				'statusid':  STATUS_KEY[$(this).find('statusid').text().trim()],
-				'priorityid':  PRIORITIES_KEY[$(this).find('priorityid').text().trim()],
-				'typeid':  TICKET_KEY[$(this).find('typeid').text().trim()],
+				'departmentid':  $(this).find('departmentid').text().trim(),
+				'statusid':  $(this).find('statusid').text().trim(),
+				'priorityid':  $(this).find('priorityid').text().trim(),
+				'typeid':  $(this).find('typeid').text().trim(),
 				'userid':  $(this).find('userid').text().trim(),
 				'ownerstaffid':  $(this).find('ownerstaffid').text().trim(),
 				'ownerstaffname':  $(this).find('ownerstaffname').text().trim(),
@@ -141,25 +139,22 @@
 				'email':  $(this).find('email').text().trim(),
 				'lastreplier':  $(this).find('lastreplier').text().trim(),
 				'subject':  $(this).find('subject').text().trim(),
-				'creationtime':  moment(new Date($(this).find('creationtime').text().trim()*1000)).format("MM-DD-YYYY HH:mm:ss"),
-				'lastactivity':  moment(new Date($(this).find('lastactivity').text().trim()*1000)).format("MM-DD-YYYY HH:mm:ss"),
+				'creationtime':  $(this).find('creationtime').text().trim(),
+				'lastactivity':  $(this).find('lastactivity').text().trim(),
 				'laststaffreply':  $(this).find('laststaffreply').text().trim(),
-				'lastuserreply':  moment(new Date($(this).find('lastuserreply').text().trim()*1000)).format("MM-DD-YYYY HH:mm:ss"),
+				'lastuserreply':  $(this).find('lastuserreply').text().trim(),
 				'slaplanid':  $(this).find('slaplanid').text().trim(),
-				'nextreplydue':  moment(new Date($(this).find('nextreplydue').text().trim()*1000)).format("MM-DD-YYYY HH:mm:ss"),
-				'resolutiondue':  moment(new Date($(this).find('resolutiondue').text().trim()*1000)).format("MM-DD-YYYY HH:mm:ss"),
+				'nextreplydue':  $(this).find('nextreplydue').text().trim(),
+				'resolutiondue':  $(this).find('resolutiondue').text().trim(),
 				'replies':  $(this).find('replies').text().trim(),
 				'isescalated':  $(this).find('isescalated').text().trim(),
-				'tags':  $(this).find('tags').text().trim(),
-				'note':  $(this).find('[id]').text().trim()
+				'tags':  $(this).find('tags').text().trim()
           });
         });
         
         table.appendRows(tableData);
         doneCallback();
         // tableau.dataCallback(tableData, "", false);
-		
-		
       }
     });
   };

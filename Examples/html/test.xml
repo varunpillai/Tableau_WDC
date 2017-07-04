@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tickets>
+    <ticket id="155843" flagtype="5">
+        <displayid>
+            <![CDATA[XNA-486-64738]]>
+        </displayid>
+        <departmentid>
+            <![CDATA[21]]>
+        </departmentid>
+        <statusid>
+            <![CDATA[8]]>
+        </statusid>
+        <priorityid>
+            <![CDATA[13]]>
+        </priorityid>
+        <typeid>
+            <![CDATA[11]]>
+        </typeid>
+        <userid>
+            <![CDATA[771]]>
+        </userid>
+        <userorganization />
+        <userorganizationid />
+        <ownerstaffid>
+            <![CDATA[50]]>
+        </ownerstaffid>
+        <ownerstaffname>
+            <![CDATA[Varun Pillai]]>
+        </ownerstaffname>
+        <fullname>
+            <![CDATA[Nick Rongione]]>
+        </fullname>
+        <email>
+            <![CDATA[nick.rongione@audiencepartners.com]]>
+        </email>
+        <lastreplier>
+            <![CDATA[Nick Rongione]]>
+        </lastreplier>
+        <subject>
+            <![CDATA[[BIG]: CRM-DSP Integration for Sales & Accouting]]>
+        </subject>
+        <creationtime>
+            <![CDATA[1485459868]]>
+        </creationtime>
+        <lastactivity>
+            <![CDATA[1485459868]]>
+        </lastactivity>
+        <laststaffreply>
+            <![CDATA[0]]>
+        </laststaffreply>
+        <lastuserreply>
+            <![CDATA[1485459868]]>
+        </lastuserreply>
+        <slaplanid>
+            <![CDATA[6]]>
+        </slaplanid>
+        <nextreplydue>
+            <![CDATA[1515699190]]>
+        </nextreplydue>
+        <resolutiondue>
+            <![CDATA[1504280517]]>
+        </resolutiondue>
+        <replies>
+            <![CDATA[0]]>
+        </replies>
+        <ipaddress>
+            <![CDATA[63.139.52.34]]>
+        </ipaddress>
+        <creator>
+            <![CDATA[2]]>
+        </creator>
+        <creationmode>
+            <![CDATA[2]]>
+        </creationmode>
+        <creationtype>
+            <![CDATA[2]]>
+        </creationtype>
+        <isescalated>
+            <![CDATA[0]]>
+        </isescalated>
+        <escalationruleid>
+            <![CDATA[0]]>
+        </escalationruleid>
+        <templategroupid>
+            <![CDATA[3]]>
+        </templategroupid>
+        <tags>
+            <![CDATA[158669 156408 fbp-378-11682 osm-592-62661 uxo-326-11570 wks-960-82455 stb-977-57579 vbt-687-38369]]>
+        </tags>
+        <templategroupname>
+            <![CDATA[AdPlatformCustomers]]>
+        </templategroupname>
+        <note type="ticket" id="4633" ticketid="155843" notecolor="1" creatorstaffid="50" forstaffid="0" creatorstaffname="Varun Pillai" creationdate="1486408920">
+            <![CDATA[From Doug(1/31/2017):
+The tables have been moved to a new schema called salesforce
+The API is reactivated for the main SF data. It actually runs and downloads a report called PDW_Daily_Report, so add fields to that if you need to and I will update the schema.
+It is downlaoded into salesforce_all and will have all records even if the probability is 0
+This is then copied into salesforce which has only records with >= 90% and valid io format
+The costs are copied from the various platforms, DFA,Turn,TTD,FB etc into campaign_monthly_costs_temp. Some need to be added such as DBM. 161, Twitter
+campaign_monthly_costs_temp has one row per cost source/per io/per month 
+campaign_monthly_costs is a rollup from campaign_monthly_costs_temp compacting the different flights of an io.
+IO_revenue_monthly_summary is created from a monthly view of salesforce. i.e. if a flight goes over two months, it will appear in both months with the flight and revenue apportioned. There are columns for each cost source which are populated from the campaign_monthly_costs table. This allows the profit and margin to be calculated for that io/month on the same row
+The audit columns at the end of this table attempt to capture problems.
+
+There is a similar set of code for daily (as opposed to monthly above) which can them be rolled up by week, month but its the same logic so it might be t to get this right first as it is the most stable.
+
+The io_map and fix tables are in the "ap" schema because they are used by the cost sources as well
+]]>
+        </note>
+        <note type="ticket" id="4634" ticketid="155843" notecolor="1" creatorstaffid="50" forstaffid="0" creatorstaffname="Varun Pillai" creationdate="1486408945">
+            <![CDATA[from Varun(2/6/2017):
+The PDW_Daily_report just gets opportunity data and I cannot add additional fields which are needed for Data Syndication and Data Usage.
+I have created two separate reports for the same so that we can leave the logic implemented currently as is and add on these two reports to two new tables. This can then be used to join across to bring additional information.
+
+The reports are:
+PDW_Daily_Data_Usage
+https://na37.salesforce.com/00O0P000003KEvr
+
+PDW_Daily_Data_Syndication
+https://na37.salesforce.com/00O0P000003KEw6
+]]>
+        </note>
+        <note type="ticket" id="4843" ticketid="155843" notecolor="1" creatorstaffid="50" forstaffid="0" creatorstaffname="Varun Pillai" creationdate="1490722260">
+            <![CDATA[I need to perform QA on the data that we currently produce in the tables from various sources.]]>
+        </note>
+        <note type="ticket" id="4980" ticketid="155843" notecolor="1" creatorstaffid="50" forstaffid="0" creatorstaffname="Varun Pillai" creationdate="1494354736">
+            <![CDATA[Added one more report to salesforce to bring all data from SF. Currently part of this project is being referenced in COGS project.]]>
+        </note>
+        <note type="ticket" id="5217" ticketid="155843" notecolor="1" creatorstaffid="50" forstaffid="0" creatorstaffname="Varun Pillai" creationdate="1496863196">
+            <![CDATA[158669: Add COGS to Salesforce - Created COGS tables for loading to Salesforce - Completed]]>
+        </note>
+        <note type="ticket" id="5218" ticketid="155843" notecolor="1" creatorstaffid="50" forstaffid="0" creatorstaffname="Varun Pillai" creationdate="1496863270">
+            <![CDATA[156408: Automate Data Usage Report Transfer to PDW - Added Data vendor information in the COGS table - Completed]]>
+        </note>
+    </ticket>
+</tickets>
