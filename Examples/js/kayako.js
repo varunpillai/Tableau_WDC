@@ -103,7 +103,7 @@
 
         var tableSchema = {
             id: "KayakoTicketList",
-            alias: "List of all Kayako Tickets",
+            // alias: "List of all Kayako Tickets",
             columns: cols
         };
 
@@ -112,13 +112,13 @@
 
     // Download the data
   myConnector.getData = function(table, doneCallback) {
+    var connectAuth = JSON.parse(tableau.connectionData);
 
     var xhr = $.ajax({
-      // url: tableau.connectionData,
-	  // url: "test.xml",
-	  url: "http://beringmedia.helpserve.com/api/index.php?e=/Tickets/Ticket/ListAll/12,17,18,19,20,21,23,24,25,29,30/4,5,6,7,8,9/&apikey=c9d160ae-0802-d194-5990-7ff6fb07889f&salt=75996179&signature=f2YHCCJYVzLdGrd9MjPA0CvmHEPyXwAcmkjXk6Sldhs%3D",
+          url: "https://www.learndataautomation.com/tableau_wdc/callback.php?apikey="+connectAuth.apiKey+"&company="+connectAuth.companyName,
 	  type: "GET",
-	  headers: { "Accept": "application/json; odata=verbose" },
+	  headers: { "Accept": "application/xml; odata=verbose" },
+	  dataType:'xml',
       success: function (response) {
         var ticketslist = $(response).find('tickets');
 
@@ -169,11 +169,12 @@
     // Create event listeners for when the user submits the form
     $(document).ready(function() {
         $("#submitButton").click(function() {
-			var kayakoURL = $('#kayakoURL').val().trim();
-			var apiKey = $('#apiKey').val().trim();
-			var connectionUrl = "http://" + kayakoURL + ".helpserve.com/api/index.php?e=/Tickets/Ticket/ListAll/12,17,18,19,20,21,23,24,25,29,30/&apikey=" + apiKey + "&salt=75996179&signature=f2YHCCJYVzLdGrd9MjPA0CvmHEPyXwAcmkjXk6Sldhs%3D"
+			var connectAuth = {
+            			companyName: $('#kayakoURL').val().trim(),
+            			apiKey: $('#apiKey').val().trim()
+        		};
             tableau.connectionName = "Kayako Ticket List"; // This will be the data source name in Tableau
-			tableau.connectionData = connectionUrl;
+	    tableau.connectionData = JSON.stringify(connectAuth);
             tableau.submit(); // This sends the connector object to Tableau
         });
     });
